@@ -1,0 +1,38 @@
+testjob:
+  name: demo
+  testenv:
+    dataset_url: "C:/ianvs/examples/atcii/dataset/trainData.csv"
+    train_ratio: 0.8
+    label: "Thermal preference"
+    model_eval:
+      metric: "precision_score"
+      metric_param: "{'average': 'micro'}"
+      threashold: 0.95
+    metrics: [smape]
+    visualization_modes: [line]
+    rank:
+      switch: true
+      rankBy: "smape"
+    output_url: "C:/ianvs/examples/result"
+  algorithm:
+    paradigms:
+      - kind: lifelonglearning
+        incremental_rounds: 2
+        funcs:
+          - kind: "task_definition"
+            method: "TaskDefinitionByDataAttr"
+            parameters:
+              attribute: [ "Season", "Cooling startegy_building level" ]
+          - kind: "task_mining"
+            method: "TaskMiningByDataAttr"
+            parameters:
+              attribute: [ "Season", "Cooling startegy_building level" ]
+    basemodels:
+      - name: xgboost
+        # hyperparameter_file: /root/test/algorithm/config.py
+        hyperparameters:
+          learning_rate: 0.1
+          n_estimators: [600, 500]
+          max_depth: 2
+          num_class: 3
+        multi_parameters: [n_estimators]
