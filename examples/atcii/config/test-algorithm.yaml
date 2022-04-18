@@ -1,0 +1,55 @@
+algorithm:
+  paradigm: "lifelonglearning"
+  dataset_train_ratio: 0.8
+  modules:
+    - kind: "basemodel"
+      name: "estimator"
+      url: "/home/yj/ianvs/examples/atcii/algorithms/basemodel.py"
+      hyperparameters:
+        - learning_rate:
+            values:
+              - 0.001
+              - 0.02
+        - other_hyperparameters:
+            values:
+              - "/home/yj/ianvs/examples/atcii/config/hyperparameter.yaml"
+    - kind: "feature_process"
+      name: "feature_process"
+      url: "/home/yj/ianvs/examples/atcii/algorithms/basemodel.py"
+    - kind: "task_definition"
+      name: "TaskDefinitionByDataAttr"
+      type: "function"
+      hyperparameters:
+        - attribute:
+            values:
+              - [ "Season", "Cooling startegy_building level" ]
+    - kind: "task_allocation"
+      name: "TaskAllocationByDataAttr"
+      hyperparameters:
+        - attribute:
+            values:
+              - [ "Season", "Cooling startegy_building level" ]
+    - kind: "task_division"
+      name: "TaskDivisionByAttr"
+      type: "function"
+    - kind: "task_process"
+      name: "ProcessByDataAttr"
+      hyperparameters:
+        - attribute:
+            values:
+              - [ "Season", "Cooling startegy_building level" ]
+    - kind: "unseen_task_division"
+      name: "TaskDivisionByDataAttr"
+      type: "function"
+    - kind: "unseen_task_process"
+      name: "ProcessByDataAttr"
+      hyperparameters:
+        - attribute:
+            values:
+              - [ "Season", "Cooling startegy_building level" ]
+    - kind: "task_update_strategy"
+      name: "UpdateStrategyByDataAttr"
+      hyperparameters:
+        - attribute:
+            values:
+              - [ "Season", "Cooling startegy_building level" ]

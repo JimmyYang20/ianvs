@@ -1,0 +1,104 @@
+# 测试工作配置（考生答题）
+testjob:
+  # 一次测试工作的命名，测试在工作空间具有唯一标识性，字符串类型，必选（考生填写姓名) ；
+  name: "demo"
+  # 测试工作空间，保存本地多个测试工作的输出， 字符串类型，可选，默认值是 "./workspace/"
+  workspace: "/home/yj/ianvs/examples/fpn/workspace"
+
+  # 测试环境配置（考卷）, 字符串类型，必选， 默认值是 “”；
+  testenv: "/home/yj/ianvs/examples/fpn/config/testenv.yaml"
+
+
+  # 算法配置， 字典类型，必选，默认值是 ""；
+  # AI范式配置，列表类型， 必选，默认值是 []；
+  paradigms:
+    # 范式的类型，字符串类型，必选，默认值是 “”， 当前支持“lifelonglearning" ；
+    - name: "lifelonglearning"
+      # 每轮模型训练数据占比， 浮点类型，可选，默认值是0.8；
+      train_data_ratio: 0.8
+      # 基础模型配置列表，列表类型，必选，默认值是 []；
+      basemodels:
+        # 基础模型名，字符串类型，必选，默认值是 ""；
+        - name: "estimator"
+          # 自定义基础模型文件地址，字符串型，必选，默认值是 ""；
+          url: "/home/yj/ianvs/examples/fpn/algorithms/basemodel.py"
+
+          #"feature_process": "feature_process"
+
+          # 超参组合配置列表， 列表类型，可选，默认值是 {}；
+          # 该列表可用于测试超参数的多个值，对应结果均列入排行榜中；比如alpha:(0.1, 0.2)表示alpha取两个值各运行一次实验
+          # 建议取单个值的其它超参可以直接放到other_file中，避免此配置文件过于冗长
+          # 另： 若两个位置的超参有重合，默认优先选择下面配置列表中的值
+
+        # AI范式需要的其它模块算法， 列表类型，可选， 默认值是 []；
+        # 列表的元素详解：字典类型，必选，默认值是 {}；
+      modules:
+        # AI范式中模块算法类型，字符串类型，可选，默认值是“”， 当前支持“task_definition”、“task_mining"等，
+        # 内置lib框架中，可能出现新流程及其新模块。对新模块的算法变更，开发者需要在lib库中填充相应算法才能于此处调用。
+        # 对于新模块，不直接输入算法文件路径而是在lib库中填充的原因是，lib提供了对新模块接口的检测机制，避免变更接口导致的运行错误
+        # 对于常见模块，通常接口比较通用且稳定，如下面的基础模型算法，则提供了文件路径用于直接调用
+        # Todo: Sedna lib库文档，使用指南文档
+        - name: "task_definition"
+          method: "TaskDefinitionByCluster"
+          parameters:
+            n_class: 1
+        # inference parameters
+        - name: "task_division"
+          method: "TaskDivisionByAttr"
+        - name: "unseen_task_detect"
+          method: "FMeasureFilter"
+          parameters:
+            estimator: "basemodel"
+        - name: "inference_integrate"
+          method: "BBoxInferenceIntegrate"
+        # update training parameters
+        - name: "task_process"
+          method: "ProcessByModelMining"
+        - name: "unseen_task_division"
+          method: "TaskDivisionByModelProbe"
+        - name: "unseen_task_process"
+          method: "ProcessByModelMining"
+        - name: "task_update_strategy"
+          method: "UpdateStrategyByModelMining"
+  # ianvs评估的指标计算方法，列表类型， 必填，当前metrics.py内置支持 "smape" 和 "max_error_rate"；
+  # 单个算法的评估指标。注：在终身学习中单个算法可能产生多个模型，此处为单个算法多个模型的端到端评估指标
+  # 可以填写希望显示的多个指标.指标按照列举先后顺序作为优先级排序，比如列在前面的优先级更高
+  # Todo: 目前仅支持内置，用户需要增加时就修改内置metrics.py，后续支持用户自定义指标
+  metrics:
+    - name: "f1_score"
+      url: "/home/yj/ianvs/examples/fpn/algorithms/f1_score.py"
+
+  # ianvs 本地评估结果的排行榜的配置，字典类型，可选，默认值是 {}  ；
+  rank:
+    # 排行榜的排序规则，列表类型，可选，默认值是 []；
+    # 列表的元素详解：字典类型，其中key是ianvs评估的指标计算方法，字符串类型，
+    #              value是排序方式，当前支持 “ascend" 和 ”descend" ；
+    # 排行榜的排序优先级按照列表中元素从前往后依次排列而定，比如 "sampe"的优先级要高于"max_error_rate"；
+    sort_by: [ { "f1_score": "descend" } ]
+
+    #
+    visualization:
+      # 可视化模式，字符串类型，可选，当前支持 "off"和 "selected_only"，默认值是 "selected_only"；
+      mode: "selected_only"
+      # 可视化方法，字符串类型，可选，当前支持"print_table"，默认值是 "print_table"；
+      method: "print_table"
+
+    # 白名单，通过范式、基础模型和超参列表来筛选元素可视化，字典类型，可选， 默认值是 {}，
+    selected_dataitem:
+      # 范式名字，列表类型，可选，当前支持"lifelonglearning"和"all", 默认值是 ""；
+      paradigms: [ "all" ]
+      # 基础模型名字，列表类型，可选，当前支持"all", 默认值是 ""；
+      basemodels: [ "all" ]
+      # 超参列表，列表类型，可选，当前支持"all"及相关超参数，默认值是[]；
+      hyperparameters: [ "all" ]
+      # 指标列表，列表类型，可选，当前支持"all"，默认值是[]；
+      metrics: [ "f1_score" ]
+
+    # 保存模式，列表类型，可选，当前支持 "off", "selected_only", "selected_and_all"，默认值是 "selected_and_all"；
+    save_mode: "selected_and_all"
+
+
+
+
+
+
