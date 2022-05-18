@@ -54,11 +54,11 @@ class LifelongLearning:
             model_eval = copy.deepcopy(self.testenv.model_eval)
             metric_info = model_eval.pop("model_metric")
 
-            metric_res, index_file = job.evaluate(eval_dataset, metrics=utils.get_metric(metric_info),
-                                                  metrics_param=metric_info.get("parameters"), **model_eval)
+            job.evaluate(eval_dataset, metrics=utils.get_metric(metric_info),
+                        metrics_param=metric_info.get("parameters"), **model_eval)
 
             inference_dataset = self._process_dataset(self.testenv.dataset.eval_dataset, dataset.label, "test")
-            res, is_unseen_task, tasks = job.inference(inference_dataset, index_file=index_file)
+            res, is_unseen_task, tasks = job.inference(inference_dataset)
             self._save_inference_result(res, r)
         return res
 
@@ -77,10 +77,10 @@ class LifelongLearning:
         output_dir = os.path.join(self.workspace, "knowledgeable", str(round))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-        paradigm_job.config.output_url = output_dir
+        paradigm_job.cloud_knowledge_management.cloud_output_url = output_dir
 
         task_index = os.path.join(output_dir, KBResourceConstant.KB_INDEX_NAME.value)
-        paradigm_job.config.task_index = task_index
+        paradigm_job.cloud_knowledge_management.task_index = task_index
 
         self.local_task_index_map[round] = task_index
 
