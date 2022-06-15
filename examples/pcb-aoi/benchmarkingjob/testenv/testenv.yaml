@@ -22,7 +22,7 @@ testenv:
     model_metric:
       # 模型的评估指标计算方法。仅使用唯一指标进行评估和模型筛选，暂不支持容易导致系统混乱的多指标评估。
       name: "f1_score"
-      url: "/home/yj/ianvs/examples/pcb-aoi/algorithms/f1_score.py"
+      url: "/home/yj/ianvs/examples/pcb-aoi/benchmarkingjob/testenv/f1_score.py"
       # 模型评估的指标计算方法的入参， 字典类型， 可选， 默认值是 {} ；
       # parameters: { "average": "micro" }
     # 评估指标的阈值，浮点类型， 可选， 默认值是 0.9 ；
@@ -37,7 +37,7 @@ testenv:
   # Todo: 目前仅支持内置，用户需要增加时就修改内置metrics.py，后续支持用户自定义指标
   metrics:
     - name: "f1_score"
-      url: "/home/yj/ianvs/examples/pcb-aoi/algorithms/f1_score.py"
+      url: "/home/yj/ianvs/examples/pcb-aoi/benchmarkingjob/testenv/f1_score.py"
 
   # 终身学习范式和增量学习范式支持增量轮次配置, 整数类型，可选， 默认值是 2 ；
   # 增量轮次是指除初始轮次外的补充轮次，根据增量轮次和初始轮次平均分配训练数据

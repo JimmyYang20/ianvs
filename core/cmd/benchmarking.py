@@ -31,9 +31,9 @@ def main():
 def parse_args():
     parser = argparse.ArgumentParser(description='local AI test tool')
     parser.add_argument("-f", "--config_file",
-                        # nargs="?", default="~/config_file.yaml",
-                        nargs="?",
-                        default= "/home/yj/core/examples/pcb-aoi/benchmarkingjob/benchmarkingjob.yaml",
+                        nargs="?", default="~/config_file.yaml",
+                        # nargs="?",
+                        # default= "/home/yj/ianvs/examples/pcb-aoi/benchmarkingjob/benchmarkingjob.yaml",
                         type=str,
                         help="the config file for local AI test must be yaml format")
     args = parser.parse_args()

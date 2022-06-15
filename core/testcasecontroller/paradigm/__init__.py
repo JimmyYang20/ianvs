@@ -1,6 +1,6 @@
 from .incremental_learning import IncrementalLearning
 from .singletask_learning import SingleTaskLearning
-from ianvs.common.constant import ParadigmKind
+from core.common.constant import ParadigmKind
 
 
 def Paradigm(kind, test_env, algorithm, workspace):
