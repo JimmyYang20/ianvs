@@ -1,1 +1,1 @@
-from .incrmental_learning import IncrementalLearning
+from .incremental_learning import IncrementalLearning

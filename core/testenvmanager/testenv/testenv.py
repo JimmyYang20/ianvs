@@ -1,4 +1,4 @@
-from ianvs.testenvmanager.dataset import Dataset
+from core.testenvmanager.dataset import Dataset
 
 
 class TestEnv:

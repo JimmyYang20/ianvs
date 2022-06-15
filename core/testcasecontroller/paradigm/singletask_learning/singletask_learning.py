@@ -1,8 +1,8 @@
 import os
 
-from ianvs.testcasecontroller.paradigm.base import ParadigmBase
-from ianvs.testenvmanager.testenv import TestEnv
-from ianvs.testcasecontroller.algorithm import Algorithm
+from core.testcasecontroller.paradigm.base import ParadigmBase
+from core.testenvmanager.testenv import TestEnv
+from core.testcasecontroller.algorithm import Algorithm
 
 
 class SingleTaskLearning(ParadigmBase):
@@ -27,4 +27,4 @@ class SingleTaskLearning(ParadigmBase):
         job.load(trained_model_path)
         infer_res = job.predict(inference_dataset.x)
 
-        self.eval_overall(infer_res)
+        return self.eval_overall(infer_res)

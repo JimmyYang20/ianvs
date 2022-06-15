@@ -3,7 +3,7 @@ import os
 import numpy as np
 import pandas as pd
 
-from ianvs.storymanager.visualization import get_visualization_func
+from core.storymanager.visualization import get_visualization_func
 
 
 class Rank:

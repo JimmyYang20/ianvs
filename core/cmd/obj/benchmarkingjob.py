@@ -2,11 +2,11 @@ import copy
 import os
 from itertools import product
 
-from ianvs.testcasecontroller.algorithm import Algorithm, Module
-from ianvs.testcasecontroller.testcase import TestCase
-from ianvs.storymanager.rank import Rank
-from ianvs.common import utils
-from ianvs.testenvmanager.testenv import TestEnv
+from core.testcasecontroller.algorithm import Algorithm, Module
+from core.testcasecontroller.testcase import TestCase
+from core.storymanager.rank import Rank
+from core.common import utils
+from core.testenvmanager.testenv import TestEnv
 
 
 class TestJob:

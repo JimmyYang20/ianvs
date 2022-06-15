@@ -3,7 +3,7 @@ import numpy as np
 
 from sedna.common.class_factory import ClassFactory, ClassType
 
-from ianvs.common.utils import load_module
+from core.common.utils import load_module
 
 def smape(y_true, y_pred):
     y_true = np.array(y_true).reshape(-1, 1)

@@ -3,8 +3,8 @@ import tempfile
 
 import pandas as pd
 
-from ianvs.common import utils
-from ianvs.common.constant import DatasetFormat
+from core.common import utils
+from core.common.constant import DatasetFormat
 
 
 class Dataset:

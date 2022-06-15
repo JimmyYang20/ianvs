@@ -5,8 +5,8 @@ algorithm:
   modules:
     - kind: "basemodel"
       name: "estimator"
-      url: "/home/yj/ianvs/examples/pcb-aoi/benchmarkingjob/testalgorithms/fpn_incremental_learning/basemodel.py"
+      url: "/home/yj/ianvs/examples/pcb-aoi/algorithms/basemodel.py"
       hyperparameters:
         - other_hyperparameters:
             values:
-              - "/home/yj/ianvs/examples/pcb-aoi/benchmarkingjob/testalgorithms/fpn_incremental_learning/fpn_hyperparameter.yaml"
+              - "/home/yj/ianvs/examples/pcb-aoi/config/hyperparameter.yaml"

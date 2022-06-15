@@ -1,7 +1,7 @@
 import os
 import uuid
 
-from ianvs.testcasecontroller.paradigm import Paradigm
+from core.testcasecontroller.paradigm import Paradigm
 
 
 class TestCase:
@@ -38,8 +38,8 @@ class TestCase:
 
     def run(self):
         try:
-            paradigm_pipeline = Paradigm(self.algorithm.paradigm, self.test_env, self.algorithm, self.output_dir)
-            res = paradigm_pipeline.run()
+            paradigm = Paradigm(self.algorithm.paradigm, self.test_env, self.algorithm, self.output_dir)
+            res = paradigm.run()
         except Exception as err:
             raise Exception(f"(paradigm={self.algorithm.paradigm}) pipeline runs failed, error: {err}")
         return res

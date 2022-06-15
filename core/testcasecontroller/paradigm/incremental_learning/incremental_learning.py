@@ -1,10 +1,10 @@
 import copy
 import os
 
-from ianvs.testcasecontroller.paradigm.base import ParadigmBase
-from ianvs.testenvmanager.testenv import TestEnv
-from ianvs.testcasecontroller.algorithm import Algorithm
-from ianvs.testcasecontroller.metrics import get_metric_func
+from core.testcasecontroller.paradigm.base import ParadigmBase
+from core.testenvmanager.testenv import TestEnv
+from core.testcasecontroller.algorithm import Algorithm
+from core.testcasecontroller.metrics import get_metric_func
 
 
 class IncrementalLearning(ParadigmBase):
@@ -14,7 +14,7 @@ class IncrementalLearning(ParadigmBase):
         super(IncrementalLearning, self).__init__(test_env, algorithm, workspace)
 
     def run(self):
-        rounds = self.test_env.incremental_rounds + 1
+        rounds = self.test_env.incremental_rounds
 
         try:
             dataset_files = self.preprocess_dataset(splitting_times=rounds)
@@ -28,7 +28,6 @@ class IncrementalLearning(ParadigmBase):
             train_output_dir = os.path.join(self.workspace, f"output/train/{r}")
             os.environ["MODEL_URL"] = train_output_dir
             os.environ["BASE_MODEL_URL"] = current_model_url
-
             job, feature_process = self.algorithm.build()
             train_dataset = self.load_data(train_dataset_file, "train", feature_process=feature_process)
             new_model_path = job.train(train_dataset)
@@ -43,14 +42,14 @@ class IncrementalLearning(ParadigmBase):
             operator_info = model_eval_info
             if self._trigger_deploy(eval_results, metric_name, operator_info):
                 current_model_url = new_model_path
-
+            current_model_url = "/home/yj/core/examples/pcb-aoi/workspace/pcb-algorithm-test/test-algorithm/5856ba58-ebdc-11ec-83c3-53ead20896e4/output/train/1/model.zip"
             inference_dataset = self.load_data(self.dataset.eval_dataset, "inference", feature_process=feature_process)
             inference_output_dir = os.path.join(self.workspace, f"output/inference/{r}")
             os.environ["INFERENCE_OUTPUT_DIR"] = inference_output_dir
             os.environ["MODEL_URL"] = current_model_url
             infer_res, _, _ = job.inference(inference_dataset.x)
 
-        self.eval_overall(infer_res)
+        return self.eval_overall(infer_res)
 
     def _trigger_deploy(self, eval_results, metric_name, operator_info):
         operator = operator_info.get("operator")

@@ -1,6 +1,6 @@
 import os
-from ianvs.common import utils
-from ianvs.testcasecontroller.metrics import get_metric_func
+from core.common import utils
+from core.testcasecontroller.metrics import get_metric_func
 
 
 class ParadigmBase:
@@ -14,7 +14,7 @@ class ParadigmBase:
     def eval_overall(self, result):
         """ eval overall results """
         metric_funcs = []
-        for metric_dict in self.metrics:
+        for metric_dict in self.test_env.metrics:
             metric = get_metric_func(metric_dict=metric_dict)
             if callable(metric):
                 metric_funcs.append(metric)
@@ -40,7 +40,7 @@ class ParadigmBase:
 
     def load_data(self, file: str, data_type: str, label=None, use_raw=False, feature_process=None):
         from sedna.datasources import CSVDataParse, TxtDataParse
-        from ianvs.common.constant import DatasetFormat
+        from core.common.constant import DatasetFormat
         format = utils.get_file_format(file)
 
         if format == DatasetFormat.CSV.value:

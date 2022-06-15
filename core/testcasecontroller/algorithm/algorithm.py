@@ -1,7 +1,7 @@
 from sedna.common.class_factory import ClassFactory, ClassType
 
-from ianvs.common import utils
-from ianvs.common.constant import ParadigmKind
+from core.common import utils
+from core.common.constant import ParadigmKind
 
 
 class Module:
